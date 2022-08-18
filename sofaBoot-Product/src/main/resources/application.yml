@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: product
+
+server:
+  port: 8081
+
+
+
+com:
+  alipay:
+    sofa:
+      rpc:
+        registry-address: nacos://172.16.31.210:31256/dev
+
+logging:
+  file:
+    path: ./logs
+

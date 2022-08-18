@@ -1,0 +1,79 @@
+spring:
+  # Http multipart upload file
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  # Jackson 空值不参与序列化
+  jackson:
+    default-property-inclusion: non_null
+    # Jackson Date
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure,com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        loginUsername: druid
+        loginPassword: druid
+        allow:
+      web-stat-filter:
+        enabled: true
+    dynamic:
+      druid:
+        initial-size: 5
+        min-idle: 5
+        maxActive: 1000
+        maxWait: 15000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,wall,slf4j
+      seata: true    #开启seata代理，开启后默认每个数据源都代理，如果某个不需要代理可单独关闭
+      seata-mode: AT #支持XA及AT模式,默认AT
+      primary: user
+      datasource:
+        user:
+          url: jdbc:mysql://172.16.31.210:30375/user?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+          driver-class-name: com.mysql.jdbc.Driver
+          username: dev
+          password: Aa123456
+        comment:
+          url: jdbc:mysql://172.16.31.210:30375/comment?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+          driver-class-name: com.mysql.jdbc.Driver
+          username: dev
+          password: Aa123456
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 扫描 mapper.xml classpath* 多模块扫描 mapper.xml
+#  mapper-locations: classpath*:/mapper/*Mapper.xml
+
+seata:
+  enabled: true
+  application-id: applicationId
+  tx-service-group: default_tx_group
+  #一定要是false
+  enable-auto-data-source-proxy: false
+  service:
+    vgroup-mapping:
+      #key与上面的tx-service-group的值对应
+      #value与seata集群配置文件对应
+      default_tx_group: default
+    grouplist:
+      default: 172.16.31.210:30702
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

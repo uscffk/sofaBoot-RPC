@@ -1,0 +1,14 @@
+com:
+  alipay:
+    sofa:
+      rpc:
+        registry-address: nacos://172.16.31.210:31256/dev
+        bolt-port: 20002
+
+
+spring:
+  application:
+    name: consume
+
+server:
+  port: 8080
